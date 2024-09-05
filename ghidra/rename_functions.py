@@ -94,6 +94,7 @@ def get_calls_from_all_callers(callers, callee):
 # decompileFunction                 - Decompile function
 # DecompileResults.getHighFunction  - Get the high-level function structure associated with these decompilation results
 # HighFunction.getPcodeOps          - Get all PcodeOps (alive or dead) ordered by SequenceNumber
+# Ref: https://github.com/HackOvert/GhidraSnippets?tab=readme-ov-file#analyzing-function-call-arguments-at-cross-references
 def get_calls_from_caller(caller, callee):
     calls = []
     res = ifc.decompileFunction(caller, 60, monitor)
@@ -177,4 +178,3 @@ def main():
 
 if __name__ == '__main__':
     main()
-
