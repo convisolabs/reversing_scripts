@@ -27,7 +27,6 @@ def get_target_function(name):
     symbol = current_program.symbolTable.getExternalSymbol(name)
     if not symbol:
         return getFunction(name)
-
     thunk_address = symbol.object.functionThunkAddresses[0]
     for ref in getReferencesTo(thunk_address):
         if ref.getReferenceType() == RefType.COMPUTED_CALL:
@@ -142,24 +141,20 @@ def rename_all(callers_candidates):
         current_name = callers_candidate['caller']['name']
         address  = callers_candidate['caller']['address']
         candidates = callers_candidate['candidates']
-        #print(current_name, address, candidates)
         if not current_name.startswith('FUN_'): continue
-
         if (len(candidates)) != 1:
-            print("ERROR   - {} - more than 1 candidate - {}".format(current_name, str(candidates)))
+            msg = "ERROR   - {} - more than 1 candidate - {}"
+            print(msg.format(current_name, str(candidates)))
             continue
-
         function = getFunction(current_name)
         new_name = candidates[0]
-
         if not new_name:
-            print("ERROR   - {} - candidate is None".format(current_name))
+            msg = "ERROR   - {} - candidate is None"
+            print(msg.format(current_name))
             continue
-
         function.setName(new_name, ghidra.program.model.symbol.SourceType.USER_DEFINED)
         print("SUCCESS - {} renamed to {}".format(current_name, new_name))
         count += 1
-
     perc = (float(count) / float(total)) * 100.0
     print("From {} functions {} were renamed - {}% ".format(total, count, perc))
 
